@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/meguro/catkin_ws/devel/include",
+                "/opt/ros/melodic/include",
+                "/home/meguro/catkin_ws/src/bebop_autonomy/bebop_driver/include",
+                "/home/meguro/catkin_ws/src/ddynamic_reconfigure/include",
+                "/home/meguro/catkin_ws/src/feature_recognition/include",
+                "/home/meguro/catkin_ws/src/feature_recognition2/include",
+                "/home/meguro/catkin_ws/src/freenect_stack/freenect_camera/include",
+                "/home/meguro/catkin_ws/src/obstacle_recognition/include",
+                "/home/meguro/catkin_ws/src/realsense-ros/realsense2_camera/include",
+                "/home/meguro/catkin_ws/src/tree_recognition/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14"
+        }
+    ],
+    "version": 4
+}
