@@ -2,6 +2,7 @@
 #include<GL/glut.h>
 #include<math.h>
 #include<iostream>
+#include<complex>
 
 #include<stdlib.h>
 
@@ -13,25 +14,36 @@
 #define BAR_WIDTH 0.1//棒の幅
 #define BAR_LENGTH 0.4//棒の長さ
 #define G 9.8//重力加速度
-#define DT 0.1//微小時間
+#define DT 0.01//微小時間
 
 #define M 1.0
 #define L 1.0
 
 #define THETA_PENDULUM0 0.0
-#define DTHETA_PENDULUM0 0.1
+#define DTHETA_PENDULUM0 1.0
+
+#define S_REAL  -1.0
+#define S_IMG   2.0
 
 class inverted_pendulum{
-    private:
+    protected:
         //パラメータ
         double theta_pendulum;//角度
         double dtheta_pendulum;//角速度
+        double S_real;
+        double S_img;
+
+        Eigen::Matrix2d A;//状態方程式
+        Eigen::Vector2d B;//状態方程式
+        Eigen::Vector2d K;//フィードバックゲイン
     public:
         inverted_pendulum();
         ~inverted_pendulum();
         double Get_theta();
         double Get_dtheta();
         Eigen::Vector2d Get_state();
+        Eigen::Matrix2d Get_A();
+        Eigen::Vector2d Get_B();
         void Set_theta(double&);
         void Set_dtheta(double&);
         void Set_state(Eigen::Vector2d&);
@@ -40,6 +52,12 @@ class inverted_pendulum{
 inverted_pendulum::inverted_pendulum(){
     this->theta_pendulum=THETA_PENDULUM0;
     this->dtheta_pendulum=DTHETA_PENDULUM0;
+    this->S_real=S_REAL;
+    this->S_img=S_IMG;
+
+    this->A(0,0)=0.;this->A(0,1)=1.;
+    this->A(1,0)=G/L;this->A(1,1)=0.;
+    this->B(0)=0.;this->B(1)=1.;
 }
 
 inverted_pendulum::~inverted_pendulum(){
@@ -58,6 +76,14 @@ Eigen::Vector2d inverted_pendulum::Get_state(){
     state(0)=this->theta_pendulum;
     state(1)=this->dtheta_pendulum;
     return state;
+}
+
+Eigen::Matrix2d inverted_pendulum::Get_A(){
+    return this->A;
+}
+
+Eigen::Vector2d inverted_pendulum::Get_B(){
+    return this->B;
 }
 
 void inverted_pendulum::Set_theta(double& theta){
@@ -79,7 +105,7 @@ Eigen::Vector2d f(Eigen::Vector2d state){
     Eigen::Vector2d ret;
 
     ret(0)=state(1);
-    ret(1)=G/L*cos(state(0));
+    ret(1)=G/L*sin(state(0));
     return ret;
 }
 
@@ -100,6 +126,13 @@ void RungeKutta(inverted_pendulum& ip ,double dt){
     s4=f(var);
 
     org=org+dt*(s1+2*s2+2*s3+s4)/6;
+    if(org(0)>M_PI){
+        org(0)-=2*M_PI;
+    }
+    else if(org(0)<-M_PI){
+        org(0)+=2*M_PI;
+    }
+
     ip.Set_state(org);
 }
 
@@ -129,11 +162,11 @@ void display(void){
     glBegin(GL_POLYGON);
     glVertex2d(-BAR_WIDTH/2*cos(InvPend.Get_theta()), GROUND_HEIGHT-BAR_WIDTH/2*sin(InvPend.Get_theta()));
     glVertex2d( BAR_WIDTH/2*cos(InvPend.Get_theta()), GROUND_HEIGHT+BAR_WIDTH/2*sin(InvPend.Get_theta()));
-    glVertex2d(-BAR_WIDTH/2*cos(InvPend.Get_theta()), GROUND_HEIGHT+BAR_LENGTH-BAR_WIDTH/2*sin(InvPend.Get_theta()));
+    glVertex2d(-BAR_WIDTH/2*cos(InvPend.Get_theta())-BAR_LENGTH*sin(InvPend.Get_theta()), GROUND_HEIGHT-BAR_WIDTH/2*sin(InvPend.Get_theta())+BAR_LENGTH*cos(InvPend.Get_theta()));
     glEnd();
     glBegin(GL_POLYGON);
-    glVertex2d( BAR_WIDTH/2*cos(InvPend.Get_theta()), GROUND_HEIGHT+BAR_LENGTH+BAR_WIDTH/2*sin(InvPend.Get_theta()));
-    glVertex2d(-BAR_WIDTH/2*cos(InvPend.Get_theta()), GROUND_HEIGHT+BAR_LENGTH-BAR_WIDTH/2*sin(InvPend.Get_theta()));
+    glVertex2d( BAR_WIDTH/2*cos(InvPend.Get_theta())-BAR_LENGTH*sin(InvPend.Get_theta()), GROUND_HEIGHT+BAR_LENGTH*cos(InvPend.Get_theta())+BAR_WIDTH/2*sin(InvPend.Get_theta()));
+    glVertex2d(-BAR_WIDTH/2*cos(InvPend.Get_theta())-BAR_LENGTH*sin(InvPend.Get_theta()), GROUND_HEIGHT+BAR_LENGTH*cos(InvPend.Get_theta())-BAR_WIDTH/2*sin(InvPend.Get_theta()));
     glVertex2d( BAR_WIDTH/2*cos(InvPend.Get_theta()), GROUND_HEIGHT+BAR_WIDTH/2*sin(InvPend.Get_theta()));
     glEnd();
 
@@ -144,7 +177,7 @@ void display(void){
         double rate=(double)i/PART;
         double x= RADIUS*cos(2.0*M_PI*rate);
         double y= RADIUS*sin(2.0*M_PI*rate);
-        glVertex3d(x+BAR_LENGTH*sin(InvPend.Get_theta()), y+GROUND_HEIGHT+BAR_LENGTH*cos(InvPend.Get_theta()), 0.0);
+        glVertex3d(x-BAR_LENGTH*sin(InvPend.Get_theta()), y+GROUND_HEIGHT+BAR_LENGTH*cos(InvPend.Get_theta()), 0.0);
     }
     glEnd();
 
