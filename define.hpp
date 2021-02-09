@@ -1,7 +1,7 @@
 #pragma once
-#include"inverted-pendulum.hpp"
+#include"pole-assignment.hpp"
 
-extern inverted_pendulum InvPend;
+extern pole_assignment InvPend;
 
 #define GROUND_HEIGHT 0.0//地面の高さ
 #define PART 50//円の分割数
@@ -15,5 +15,8 @@ extern inverted_pendulum InvPend;
 #define MASS 1.0
 #define LENGTH 1.0
 
-#define THETA_PENDULUM0 0.0
+#define THETA_PENDULUM0 2.0
 #define DTHETA_PENDULUM0 1.0
+
+#define POLE_REAL   (-5.)
+#define POLE_IMG    2.

@@ -1,5 +1,5 @@
 TARGET = main
-SUB = inverted-pendulum simulation graphics
+SUB = inverted-pendulum simulation graphics equation-state pole-assignment
 
 EXE=$(addsuffix .out,$(TARGET))
 OBJ=$(addsuffix .o,$(TARGET))

@@ -7,12 +7,13 @@
 #include<stdlib.h>
 #include<math.h>
 
+extern pole_assignment InvPend;
 
 void idle(void){
     glutPostRedisplay();
 }
 
-void display(void){
+void display(){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -93,7 +94,7 @@ void keyboard(unsigned char key, int x, int y){
     }
 }
 
-void vizualize(int argc,char **argv){
+void graphics(int argc,char **argv){
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutCreateWindow(argv[0]);

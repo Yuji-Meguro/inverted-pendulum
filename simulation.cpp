@@ -9,7 +9,7 @@ Eigen::Vector2d f(Eigen::Vector2d state){
     return ret;
 }
 
-void RungeKutta(inverted_pendulum& ip ,double dt){
+void RungeKutta(pole_assignment& ip ,double dt){
     Eigen::Vector2d org,var,s1,s2,s3,s4;
     org=ip.Get_state();
     var=ip.Get_state();
