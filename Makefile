@@ -1,18 +1,20 @@
-TARGET = inverted-pendulum
+TARGET = main
+SUB = inverted-pendulum simulation graphics
 
 EXE=$(addsuffix .out,$(TARGET))
 OBJ=$(addsuffix .o,$(TARGET))
+SUBOBJ=$(addsuffix .o,$(SUB))
+EXE +=  $(OBJ) $(SUBOBJ)
 
 LDFLAGS += -lglut -lGLU -lGL -lXmu -lXi -lXext -lX11 -lm -lpthread
 
 all: $(EXE)
 
-%.out: %.o
-	g++ -O -o $@ $^ $(LDFLAGS)
+%.out: %.o $(SUBOBJ)
+	$(CXX) -O -o $@ $^ $(LDFLAGS)
 
 %.o: %.cpp
-	g++ -O -o $@ -c $<
+	$(CXX) -O -o $@ -c $<
 
 clean:
-	rm -rf *.out
-	rm -rf *.o
+	$(RM) *.out *.o
