@@ -7,7 +7,7 @@
 // #include<iostream>
 // #include<complex>
 
-inverted_pendulum InvPend;
+pole_assignment InvPend;
 
 int main(int argc,char *argv[]){
     graphics(argc, argv);
