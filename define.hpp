@@ -15,7 +15,7 @@ extern pole_assignment InvPend;
 #define MASS 1.0
 #define LENGTH 1.0
 
-#define THETA_PENDULUM0 2.0
+#define THETA_PENDULUM0 0.0
 #define DTHETA_PENDULUM0 1.0
 
 #define POLE_REAL   (-5.)

@@ -1,37 +1,39 @@
 #include"simulation.hpp"
 #include"define.hpp"
 
-Eigen::Vector2d f(Eigen::Vector2d state){
+Eigen::Vector2d f(pole_assignment &ip){
     Eigen::Vector2d ret;
 
-    ret(0)=state(1);
-    ret(1)=GACCE/LENGTH*sin(state(0));
+    ret(0)=ip.Get_dtheta();
+    ret(1)=GACCE/LENGTH*sin(ip.Get_theta());
     return ret;
 }
 
-void RungeKutta(pole_assignment& ip ,double dt){
-    Eigen::Vector2d org,var,s1,s2,s3,s4;
+void RungeKutta(pole_assignment& ip,double dt){
+    pole_assignment var;
+    Eigen::Vector2d org,s1,s2,s3,s4,ref;
+    
+    var=ip;
     org=ip.Get_state();
-    var=ip.Get_state();
 
     s1=f(var);
-    var=org+dt*s1/2.;
+    ref=org+dt*s1/2.;
+    var.Set_state(ref);
 
     s2=f(var);
-    var=org+dt*s2/2.;
+    ref=org+dt*s2/2.;
+    var.Set_state(ref);
 
     s3=f(var);
-    var=org+dt*s3;
+    ref=org+dt*s3;
+    var.Set_state(ref);
 
     s4=f(var);
 
-    org=org+dt*(s1+2*s2+2*s3+s4)/6;
-    if(org(0)>M_PI){
-        org(0)-=2*M_PI;
-    }
-    else if(org(0)<-M_PI){
-        org(0)+=2*M_PI;
-    }
+    org=org+dt*(s1+2*s2+2*s3+s4)/6.0;
+
+    if(org(0)>M_PI){org(0)-=2*M_PI;}
+    else if(org(0)<-M_PI){org(0)+=2*M_PI;}
 
     ip.Set_state(org);
 }
