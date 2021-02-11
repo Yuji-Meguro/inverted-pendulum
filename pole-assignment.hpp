@@ -6,11 +6,12 @@
 
 class pole_assignment : public equation_state{
     protected:
-        Eigen::Vector2d Gain;
         std::complex<double> Pole;
+        Eigen::Vector2d K;
+
     public:
         pole_assignment();
         ~pole_assignment();
-        Eigen::Vector2d Get_Gain();
         std::complex<double> Get_Pole();
+        Eigen::Vector2d Get_K();
 };

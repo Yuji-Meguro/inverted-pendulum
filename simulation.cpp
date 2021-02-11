@@ -1,12 +1,10 @@
 #include"simulation.hpp"
 #include"define.hpp"
-#include<iostream>
 
 Eigen::Vector2d f(pole_assignment &ip){
     Eigen::Vector2d ret;
     Eigen::Vector2d force;
     force=(ip.Get_B()*ip.Get_K().transpose()*ip.Get_state());
-    std::cout<< force<<std::endl;
 
     ret(0)=ip.Get_dtheta()-force(0);
     ret(1)=GACCE/LENGTH*sin(ip.Get_theta())-force(1);
