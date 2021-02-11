@@ -15,6 +15,8 @@ equation_state::equation_state(){
     this->A_bar=this->T.inverse()*this->A*this->T;
     this->B_bar=this->T.inverse()*this->B;
 
+    this->K(0)=100.0;this->K(1)=10.0;
+
     u=0.;
 }
 
