@@ -16,7 +16,10 @@ extern pole_assignment InvPend;
 #define LENGTH 1.0
 
 #define THETA_PENDULUM0 0.0
-#define DTHETA_PENDULUM0 1.0
+#define DTHETA_PENDULUM0 10.0
 
 #define POLE_REAL   (-5.)
 #define POLE_IMG    2.
+
+#define K1   100.
+#define K2    10.

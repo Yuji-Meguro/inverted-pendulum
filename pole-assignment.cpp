@@ -6,7 +6,7 @@ pole_assignment::pole_assignment(){
     this->Pole=std::complex<double>(POLE_REAL,POLE_IMG);
 
     //極からゲインを求める
-    this->K(0)=100.0;this->K(1)=10.0;
+    this->K(0)=K1;this->K(1)=K2;
 }
 
 pole_assignment::~pole_assignment(){
