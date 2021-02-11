@@ -7,6 +7,8 @@
 #include<stdlib.h>
 #include<math.h>
 
+#include<iostream>
+
 extern pole_assignment InvPend;
 
 void idle(void){
@@ -58,6 +60,8 @@ void display(){
     //   glFlush();
 
     RungeKutta(InvPend,DT);
+    std::cout<< InvPend.Get_state()<<std::endl;
+    std::cout<<std::endl;
 }
 
 void mouse(int button, int state, int x, int y){
